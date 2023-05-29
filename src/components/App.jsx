@@ -8,21 +8,16 @@ export class App extends Component {
   
   state = {
     contacts: [],
-    name: '',
-    number: '',
     filter: '',
   }
 
-  nameInput = ({target}) => {
-    this.setState({[target.name]: target.value});
-  }
 
-
-  onSubmitContact = (e) => {
-    e.preventDefault()
+  onSubmitContact = ({name, number}) => {
+   
     this.createContact({
-      name:this.state.name,
-      number:this.state.number,
+      name:name,
+      number:number,
+   
     })
     this.reset();
   }
@@ -37,20 +32,25 @@ export class App extends Component {
     alert('This contact already exist')
     return
    }
+
     this.setState((prevState) => ({contacts: [...prevState.contacts, newUser]}))
+  }
+
+  handleNameInput = ({target}) => {
+    this.onChange(target.value)
   }
 
   onChange = (query) => {
     this.setState({filter: query})
-    const normalizedFilter = this.state.filter.toLowerCase()
+    const normalizedFilter = this.state.filter.toLowerCase();
     const filteredContact = this.state.contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
     return filteredContact
   }
 
 
-
   getContactBySearch = () => {
     const normalizedFilter = this.state.filter.toLowerCase()
+
     const filteredContact = this.state.contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter))
     return filteredContact
   }
@@ -74,9 +74,9 @@ export class App extends Component {
   return (
   <>
   <h2>Phonebook</h2>
-  <Form  name={this.state.name } number={this.state.number} nameInput={this.nameInput} onSubmitContact={this.onSubmitContact} />
+  <Form onSubmitContact={this.onSubmitContact} />
   <h2>Contacts</h2>
-  <Filter contacts={this.state.contacts} onChange={this.onChange}/>
+  <Filter onChange={this.onChange} handleNameInput={this.handleNameInput}/>
   <ContactList contacts={this.getContactBySearch()} handleDelete={this.handleDelete}/>
 
 </>
