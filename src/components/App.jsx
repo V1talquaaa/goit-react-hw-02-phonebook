@@ -11,6 +11,21 @@ export class App extends Component {
     filter: '',
   }
 
+  componentDidMount() {
+    if(localStorage.getItem('contact'))
+    // localStorage.setItem('contact', JSON.stringify(this.state.contacts))
+    this.setState({contacts: JSON.parse(localStorage.getItem('contact'))})
+  }
+
+  componentDidUpdate(_, prevState) {
+    if(prevState.contacts.length > this.state.contacts.length) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts))
+    
+    }
+    if(prevState.contacts.length < this.state.contacts.length) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts))
+    }
+  }
 
   onSubmitContact = ({name, number}) => {
    
@@ -76,7 +91,7 @@ export class App extends Component {
   <h2>Phonebook</h2>
   <Form onSubmitContact={this.onSubmitContact} />
   <h2>Contacts</h2>
-  <Filter onChange={this.onChange} handleNameInput={this.handleNameInput}/>
+  <Filter handleNameInput={this.handleNameInput}/>
   <ContactList contacts={this.getContactBySearch()} handleDelete={this.handleDelete}/>
 
 </>

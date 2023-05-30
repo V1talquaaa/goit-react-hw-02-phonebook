@@ -11,7 +11,7 @@ const Filter = ({handleNameInput}) => {
     }
     
     Filter.propTypes = {
-        onChange: PropTypes.func.isRequired,
+        handleNameInput: PropTypes.func.isRequired,
     }
     
     export { Filter }
