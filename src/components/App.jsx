@@ -18,13 +18,11 @@ export class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    if(prevState.contacts.length > this.state.contacts.length) {
+    if(prevState.contacts.length !== this.state.contacts.length) {
       localStorage.setItem('contact', JSON.stringify(this.state.contacts))
     
     }
-    if(prevState.contacts.length < this.state.contacts.length) {
-      localStorage.setItem('contact', JSON.stringify(this.state.contacts))
-    }
+
   }
 
   onSubmitContact = ({name, number}) => {
@@ -43,7 +41,7 @@ export class App extends Component {
     ...data,
     id: nanoid()
    }
-   if (this.state.contacts.find(contact => contact.name === newUser.name)) {
+   if (this.state.contacts.find(contact => contact.name.toLowerCase() === newUser.name.toLowerCase())) {
     alert('This contact already exist')
     return
    }
@@ -57,9 +55,6 @@ export class App extends Component {
 
   onChange = (query) => {
     this.setState({filter: query})
-    const normalizedFilter = this.state.filter.toLowerCase();
-    const filteredContact = this.state.contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
-    return filteredContact
   }
 
 
